@@ -1,0 +1,27 @@
+{
+    "game": {
+        "byId": {
+            "ov9r4d0k7e": {
+                "players": [
+                    {
+                        "name": "player1",
+                        "money": 1500,
+                        "token":1,
+                        "isInJail":false,
+                        "daysInJail":-1
+                    }
+                ],
+                "squarues": [
+                    {
+                        "tokens": 1,
+                        "class": "PropertySquare",
+                        "price":1000,
+                        "name":"Tai O",
+                        "owner":"player1",
+                        "rents":100
+                    }
+                ]
+            }
+        }
+    }
+}
