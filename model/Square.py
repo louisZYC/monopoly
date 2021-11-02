@@ -1,6 +1,3 @@
 class Square:
-    def __init__(self, token):
-        pass
-
-    def action(self):
-        pass
+    def __init__(self, token: int = 0):
+        self.token = token

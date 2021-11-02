@@ -1,6 +1,6 @@
 class SquareView:
     def __init__(self):
-        pass
+       return 
 
-    def render(self,Square):
-        pass
+    def render(self,square):
+        return

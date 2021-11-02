@@ -1,15 +1,37 @@
+from random import choices
+import inquirer
+import json
+from classes.DbApi import DbApi
+from classes.Game import Game
+
+
 class GameManager:
     def __init__(self):
-        pass
+        self.dbAPi = DbApi()
+        self.games = None
+        return
 
     def init(self):
-        pass
+        return
 
     def load(self, gameId):
-        pass
+
+        return
 
     def save(self):
-        pass
+        return
 
     def run(self):
-        pass
+        self.games = json.load(open('./data/game.json'))
+        choices = self.games['byId']
+        questions = [
+            inquirer.List('targetGameId',
+                          message="What size do you need?",
+                          choices=['Jumbo', 'Large', 'Standard',
+                                   'Medium', 'Small', 'Micro'],
+                          ),
+        ]
+
+        # answers = inquirer.prompt(questions)
+        print(choices)
+        return

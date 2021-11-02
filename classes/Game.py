@@ -1,6 +1,6 @@
-class Game:       # class variable shared by all instances
+class Game:
     def __init__(self, playersMap, squareList, gameId, currentTurnIndex):
-        pass
+        return
 
     def play(self):
-        pass
+        return

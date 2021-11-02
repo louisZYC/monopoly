@@ -1,6 +1,6 @@
 class PlayerView:
     def __init__(self):
-        pass
+        return
 
-    def render(self,Player):
-        pass
+    def render(self,player):
+        return

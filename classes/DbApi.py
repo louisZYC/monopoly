@@ -1,10 +1,12 @@
-class DbApi:       # class variable shared by all instances
+class DbApi:
 
     def __init__(self):
-        pass
+        return
 
-    def readJson(self,gameId):
-        pass
+    def READ_JSON(self, gameId):
+        fileObj = open('./data/game.json')
+        print(fileObj)
+        return
 
-    def writeJson(game):
-        pass
+    def WRITE_JSON(game):
+        return

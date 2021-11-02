@@ -1,33 +1,39 @@
 class Player:
-    def __init__(self, name,money,token,isInJail,daysInJail):
-        pass
+    def __init__(self, name: str = "", money: float = 0, token: int = 0, days_in_jail: int = 0):
+        self.name = name
+        self.money = money
+        self.token = token
+        self.days_in_jail = days_in_jail
 
-    def getName(self):
-        pass
+    def get_name(self):
+        return self.name
 
-    def setName(self,name):
-        pass
+    def set_name(self, name):
+        self.name = name
 
-    def getMoney(self):
-        pass
+    def get_money(self):
+        return self.money
 
-    def setMoney(self,money):
-        pass
+    def set_money(self, money):
+        self.money = money
 
-    def getIsInJail(self):
-        pass
+    def get_is_in_jail(self):
+        return self.days_in_jail > -1
 
-    def setIsInJail(self,isInJail):
-        pass
+    def get_token(self):
+        return self.token
 
-    def getToken(self):
-        pass
+    def set_token(self, token):
+        self.token = token
 
-    def setToken(self,token):
-        pass
-    
-    def addDaysInJailByOne(self):
-        pass
+    def add_days_in_jail_by_one(self):
+        self.days_in_jail += 1
 
-    def setZeroDaysInJail(self):
-        pass
+    def get_days_in_jail(self):
+        return self.days_in_jail
+
+    def set_negative_days_in_jail(self):
+        self.days_in_jail = -1
+
+    def set_zero_days_in_jail(self):
+        self.days_in_jail = 0

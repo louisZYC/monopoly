@@ -1,12 +1,12 @@
 class DiceManager:
     def __init__(self):
-        pass
+        return
 
-    def RollingDice(self):
-        pass
+    def rolling_dice(self):
+        return
 
-    def getResultTotalNumber(self):
-        pass
+    def get_result_total_number(self):
+        return
 
-    def getResultDoubles(self):
-        pass
+    def get_result_doubles(self):
+        return
