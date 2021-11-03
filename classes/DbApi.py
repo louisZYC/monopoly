@@ -1,12 +1,13 @@
+import json
+
 class DbApi:
 
     def __init__(self):
         return
 
     def READ_JSON(self, gameId):
-        fileObj = open('./data/game.json')
-        print(fileObj)
-        return
+        games = json.load(open('./data/game.json'))
+        return games[gameId]
 
     def WRITE_JSON(game):
         return

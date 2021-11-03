@@ -22,16 +22,22 @@ class GameManager:
         return
 
     def run(self):
+        # input
         self.games = json.load(open('./data/game.json'))
-        choices = self.games['byId']
+
+        # process
+        game_list = self.games['byId']
+        choices = []
+        for key in game_list:
+            target = game_list[key]
+            choices.append((target['name'], target['id']))
         questions = [
             inquirer.List('targetGameId',
-                          message="What size do you need?",
-                          choices=['Jumbo', 'Large', 'Standard',
-                                   'Medium', 'Small', 'Micro'],
+                          message="Select a saved game",
+                          choices=choices
                           ),
         ]
 
-        # answers = inquirer.prompt(questions)
-        print(choices)
+        # output
+        answers = inquirer.prompt(questions)
         return

@@ -3,7 +3,6 @@ from model.Square import Square
 from view.SquareView import SquareView
 from model.PropertySquare import PropertySquare
 
-
 class SquareController:
     def __init__(self, view: SquareView = None, target_square: Union[Square, PropertySquare] = None):
         self.view = view

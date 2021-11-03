@@ -2,7 +2,6 @@ import random
 from model.Player import Player
 from view.PlayerView import PlayerView
 
-
 class PlayerController:
     def __init__(self, view: PlayerView = None, target_player: Player = None):
         self.view = view
@@ -61,6 +60,7 @@ class PlayerController:
         self.target_player.set_token(6)
 
     def get_out_of_jail(self):
+        #
         if(self.target_player == None):
             raise RuntimeError('please call set_target_player() first')
 
