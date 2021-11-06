@@ -1,3 +1,8 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from controller.PlayerController import PlayerController
+    from controller.SquareController import SquareController
 from model.Square import Square
 from model.Player import Player
 
@@ -10,7 +15,7 @@ class PropertySquare(Square):
         self.name = name
         self.owner = owner
 
-    def action(self, player_controller, square_controller):
+    def action(self, player_controller: PlayerController, square_controller: SquareController):
         if(self.get_has_owner()):
             player_controller.deduct_money(self.rents)
             player_controller.set_target_player(self.owner)

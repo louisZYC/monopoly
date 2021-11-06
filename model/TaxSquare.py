@@ -1,6 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from controller.PlayerController import PlayerController
+    from controller.SquareController import SquareController
 from model.Square import Square
-from controller.PlayerController import PlayerController
-from controller.SquareController import SquareController
+
 
 class TaxSquare(Square):
     def __init__(self, token: int = 0):
