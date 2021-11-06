@@ -9,73 +9,6 @@
                         "name": "player1",
                         "money": 1500,
                         "token": 1,
-                        "isInJail": false,
-                        "daysInJail": -1
-                    }
-                },
-                "allIds": [
-                    "player1"
-                ]
-            },
-            "squarues": {
-                "byId": {
-                    "1": {
-                        "tokens": 1,
-                        "class": "PropertySquare",
-                        "price": 1000,
-                        "name": "Tai O",
-                        "owner": "player1",
-                        "rents": 100
-                    }
-                },
-                "allIds": [
-                    1
-                ]
-            }
-        },
-        "4d0k7fov9r": {
-            "id": "ov9r4d0k7e",
-            "name": "game2",
-            "players": {
-                "byId": {
-                    "player1": {
-                        "name": "player1",
-                        "money": 1500,
-                        "token": 1,
-                        "isInJail": false,
-                        "daysInJail": -1
-                    }
-                },
-                "allIds": [
-                    "player1"
-                ]
-            },
-            "squarues": {
-                "byId": {
-                    "1": {
-                        "tokens": 1,
-                        "class": "PropertySquare",
-                        "price": 1000,
-                        "name": "Tai O",
-                        "owner": "player1",
-                        "rents": 100
-                    }
-                },
-                "allIds": [
-                    1
-                ]
-            }
-        },
-        "abcdef": {
-            "id": "abcdef",
-            "name": "game2",
-            "players": {
-                "byId": {
-                    "player1": {
-                        "name": "player1",
-                        "money": 1500,
-                        "token": 1,
-                        "isInJail": false,
                         "daysInJail": -1
                     }
                 },
@@ -101,8 +34,6 @@
         }
     },
     "allIds": [
-        "ov9r4d0k7e",
-        "4d0k7fov9r",
-        "abcdef"
+        "ov9r4d0k7e"
     ]
 }

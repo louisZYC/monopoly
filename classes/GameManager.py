@@ -7,29 +7,32 @@ from classes.Game import Game
 
 class GameManager:
     def __init__(self):
-        self.dbAPi = DbApi()
-        self.games = None
+        self.games = dict()
+        self.game_list = dict()
         return
 
     def init(self):
         return
 
-    def load(self, gameId):
-
-        return
+    def load(self, game_id):
+        if(len[self.game_list] == 0):
+            raise RuntimeError('please call run() first')
+            
+        game_obj = self.game_list[game_id]
+        return game_obj
 
     def save(self):
         return
 
     def run(self):
         # input
-        self.games = json.load(open('./data/game.json'))
+        self.games = DbApi.READ_JSON('./data/game.json')
+        self.game_list = self.games['byId']
 
         # process
-        game_list = self.games['byId']
         choices = []
-        for key in game_list:
-            target = game_list[key]
+        for key in self.game_list:
+            target = self.game_list[key]
             choices.append((target['name'], target['id']))
         questions = [
             inquirer.List('targetGameId',
@@ -39,5 +42,6 @@ class GameManager:
         ]
 
         # output
-        answers = inquirer.prompt(questions)
+        ans = inquirer.prompt(questions)
+        game_obj = self.load(ans['targetGameId'])
         return

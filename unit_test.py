@@ -151,41 +151,106 @@ class TestAll(unittest.TestCase):
     def test_dbapi_read_json(self):
         # TARGET: dbApi.READ_JSON()
         # PURPOSE: test if it can load a game from json file
-        dbApi = DbApi()
-        f = open('./data/game.json')
-        games = json.load(f)
-        f.close()
+        games = {
+            "byId": {
+                "ov9r4d0k7e": {
+                    "id": "ov9r4d0k7e",
+                    "name": "game1",
+                    "players": {
+                        "byId": {
+                            "player1": {
+                                "name": "player1",
+                                "money": 1500,
+                                "token": 1,
+                                "daysInJail": -1
+                            }
+                        },
+                        "allIds": [
+                            "player1"
+                        ]
+                    },
+                    "squarues": {
+                        "byId": {
+                            "1": {
+                                "tokens": 1,
+                                "class": "PropertySquare",
+                                "price": 1000,
+                                "name": "Tai O",
+                                "owner": "player1",
+                                "rents": 100
+                            }
+                        },
+                        "allIds": [
+                            1
+                        ]
+                    }
+                }
+            },
+            "allIds": [
+                "ov9r4d0k7e",
+            ]
+        }
+        path = './data/game.json'
 
-        game = json.loads(
-            '{"id": "abcdef", "name": "game2", "players": {"byId": {"player1": {"name": "player1", "money": 1500, "token": 1, "isInJail": false, "daysInJail": -1}}, "allIds": ["player1"]}, "squarues": {"byId": {"1": {"tokens": 1, "class": "PropertySquare", "price": 1000, "name": "Tai O", "owner": "player1", "rents": 100}}, "allIds": [1]}}'
-        )
-        gameId = game['id']
-        games['byId'][gameId] = game
-        allIds = []
-        for key in games['byId']:
-            allIds.append(key)
-        games['allIds'] = allIds
-        f = open('./data/game.json', 'w')
-        f.write(json.dumps(games))
-        f.close()
+        all_ids = games['allIds']
+        with open(path,'w') as f:
+            f.write(json.dumps(games))
+        result_games = DbApi.READ_JSON(path)
+        result_all_ids= result_games['allIds']
 
-        result_game = dbApi.READ_JSON(gameId)
-        self.assertTrue(result_game['id'], game['id'])
+        self.assertTrue(result_all_ids == all_ids)
 
     def test_dbapi_write_json(self):
         # TARGET: dbApi.WRITE_JSON()
         # PURPOSE: test if it can write a game to json file
-        dbApi = DbApi()
-        game = json.loads(
-            '{"id": "abcdef", "name": "game2", "players": {"byId": {"player1": {"name": "player1", "money": 1500, "token": 1, "isInJail": false, "daysInJail": -1}}, "allIds": ["player1"]}, "squarues": {"byId": {"1": {"tokens": 1, "class": "PropertySquare", "price": 1000, "name": "Tai O", "owner": "player1", "rents": 100}}, "allIds": [1]}}'
-        )
-        gameId = game['id']
-        dbApi.WRITE_JSON(game)
-        f = open('./data/game.json')
-        games = json.load(f)
-        f.close()
-        result_game = games['byId'][gameId]
-        self.assertTrue(result_game['id'], game['id'])
+        games = {
+            "byId": {
+                "ov9r4d0k7e": {
+                    "id": "ov9r4d0k7e",
+                    "name": "game1",
+                    "players": {
+                        "byId": {
+                            "player1": {
+                                "name": "player1",
+                                "money": 1500,
+                                "token": 1,
+                                "daysInJail": -1
+                            }
+                        },
+                        "allIds": [
+                            "player1"
+                        ]
+                    },
+                    "squarues": {
+                        "byId": {
+                            "1": {
+                                "tokens": 1,
+                                "class": "PropertySquare",
+                                "price": 1000,
+                                "name": "Tai O",
+                                "owner": "player1",
+                                "rents": 100
+                            }
+                        },
+                        "allIds": [
+                            1
+                        ]
+                    }
+                }
+            },
+            "allIds": [
+                "ov9r4d0k7e",
+            ]
+        }
+        path = './data/game.json'
+
+        all_ids = games['allIds']
+        DbApi.WRITE_JSON(path,games)
+        with open(path,'r') as f:
+            result_games = json.load(f)
+        result_all_ids = result_games['allIds']
+        
+        self.assertTrue(result_all_ids == all_ids)
 
 
 if __name__ == '__main__':
