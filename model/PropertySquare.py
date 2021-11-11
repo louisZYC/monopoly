@@ -16,6 +16,7 @@ class PropertySquare(Square):
         self.owner = owner
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
+        # print('This is {}'.format(square_controller.))
         if(self.get_has_owner()):
             player_controller.deduct_money(self.rents)
             player_controller.set_target_player(self.owner)
@@ -27,14 +28,41 @@ class PropertySquare(Square):
                 player_controller.deduct_money(self.price)
                 square_controller.set_owner(player_controller.target_player)
 
-    def set_owner(self, owner):
-        self.owner = owner
+    def get_token(self):
+        return self.token
+
+    def set_token(self, token):
+        self.token = token
+
+    def get_price(self):
+        return self.price
+
+    def set_price(self, price):
+        self.price = price
+
+    def get_rents(self):
+        return self.token
+
+    def set_rents(self, rents):
+        self.rents = rents
 
     def get_owner(self):
         return self.owner
+
+    def set_owner(self, owner):
+        self.owner = owner
+
+    def get_name(self):
+        return self.name
+
+    def set_name(self, name):
+        self.name = name
 
     def get_has_owner(self):
         return self.owner != None
 
     def remove_owner(self):
         self.owner = None
+
+    def to_string(self):
+        return "Property Square"

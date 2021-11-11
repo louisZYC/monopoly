@@ -12,3 +12,12 @@ class FreeParkingSquare(Square):
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
         return
+
+    def get_token(self):
+        return self.token
+
+    def set_token(self, token):
+        self.token = token
+
+    def to_string(self):
+        return "Free Parking Square"

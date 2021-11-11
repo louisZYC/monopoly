@@ -12,3 +12,12 @@ class ChanceSquare(Square):
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
         player_controller.gain_or_lose()
+
+    def get_token(self):
+        return self.token
+
+    def set_token(self, token):
+        self.token = token
+
+    def to_string(self):
+        return "Chance Square"

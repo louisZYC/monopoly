@@ -9,8 +9,15 @@ from model.Square import Square
 class GoToJailSquare(Square):
     def __init__(self, token: int = 0):
         super().__init__(token)
-        
 
-    def action(self, player_controller: PlayerController, square_controller:SquareController):
+    def action(self, player_controller: PlayerController, square_controller: SquareController):
         player_controller.go_to_jail()
-        
+
+    def get_token(self):
+        return self.token
+
+    def set_token(self, token):
+        self.token = token
+
+    def to_string(self):
+        return "Go To Jail Square"

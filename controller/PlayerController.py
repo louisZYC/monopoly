@@ -60,7 +60,6 @@ class PlayerController:
         self.target_player.set_token(6)
 
     def get_out_of_jail(self):
-        #
         if(self.target_player == None):
             raise RuntimeError('please call set_target_player() first')
 

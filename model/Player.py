@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, name: str = "", money: float = 0, token: int = 0, days_in_jail: int = 0):
+    def __init__(self, name: str = "", money: int = 0, token: int = 0, days_in_jail: int = 0):
         self.name = name
         self.money = money
         self.token = token
