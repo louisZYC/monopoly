@@ -34,10 +34,12 @@ class GameManager:
         if(len(self.games) == 0):
             raise RuntimeError('please call run() first')
 
+        # input
         message = 'How many players?'
         choices = [2, 3, 4, 5, 6]
         answer_number_of_players = Inquirer.promot_list(message, choices)
 
+        # process
         square_dict = {
             1: GoSquare(1),
             2: PropertySquare(2, 90, 800, 'Central'),
@@ -64,9 +66,18 @@ class GameManager:
         for key in range(answer_number_of_players):
             target_name = 'player' + str(key)
             player_dict[target_name] = Player(target_name, 1500, 1, -1)
+        game_name = Inquirer.prompt_text("give a name for this game")
+        self.game = Game(
+            player_dict,
+            square_dict,
+            random_id(),
+            game_name,
+            0,
+            self.save
+        )
 
-        self.game = Game(player_dict,square_dict,random_id(),list(player_dict.keys())[0])
-        print(self.game.current_turn_index)
+        # output
+        self.game.play()
         return
 
     def load(self):
@@ -82,6 +93,7 @@ class GameManager:
         print('loaded', answer_game_id)
 
     def save(self):
+        print(self.game)
         return
 
     def run(self):
