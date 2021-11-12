@@ -1,10 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from classes.Inquirer import Inquirer
 if TYPE_CHECKING:
     from controller.PlayerController import PlayerController
     from controller.SquareController import SquareController
-from model.Square import Square
 from model.Player import Player
+from model.Square import Square
 
 
 class PropertySquare(Square):
@@ -16,17 +17,66 @@ class PropertySquare(Square):
         self.owner = owner
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
-        # print('This is {}'.format(square_controller.))
-        if(self.get_has_owner()):
-            player_controller.deduct_money(self.rents)
-            player_controller.set_target_player(self.owner)
-            player_controller.add_money(self.rents)
+        if(self is not square_controller.target_square):
+            raise RuntimeError(
+                'please call square_controller.set_target_square() first')
+
+        square_controller.render_view_you_are_here()
+
+        # define variables
+        target_player: Player = player_controller.target_player
+        target_sqaure: PropertySquare = self
+        target_owner: Player = target_sqaure.get_owner()
+        target_rents = target_sqaure.get_rents()
+        target_price = target_sqaure.get_price()
+        result_money_customer_before: int = None
+        result_money_owner_before: int = None
+        result_money_customer_after: int = None
+        result_money_owner_after: int = None
+
+        if(target_owner):
+            # input
+            result_money_customer_before = target_player.get_money()
+            result_money_owner_before = target_owner.get_money()
+
+            # process
+            player_controller.deduct_money(target_rents)
+            target_owner.set_money(target_owner.get_money()+target_rents)
+            result_money_customer_after = target_player.get_money()
+            result_money_owner_after = target_player.get_money()
+
+            # output
+            print('You have paid {}HKD to {}. Your Balance: {}HKD => {}HKD. {}\'s Balance: {}HKD => {}HKD'.format(
+                target_rents,
+                target_owner.get_name(),
+                result_money_customer_before,
+                result_money_customer_after,
+                target_player.get_name(),
+                result_money_owner_before,
+                result_money_owner_after
+            ))
         else:
-            isPurchased = input("Do you want to purchase {} by {} ? If yes, type 'yes'.".format(
-                self.name, self.price))
-            if(isPurchased):
-                player_controller.deduct_money(self.price)
-                square_controller.set_owner(player_controller.target_player)
+            # input
+            answer_has_paid = Inquirer.promot_list('Pay {} to get the ownership of {}.'.format(
+                target_price,
+                target_sqaure.get_name()
+            ), ['yes', 'no'])
+
+            # process
+            if(answer_has_paid == 'yes'):
+                result_money_customer_before = target_player.get_money()
+                square_controller.set_owner(target_player)
+                player_controller.deduct_money(target_price)
+                result_money_customer_after = target_player.get_money()
+
+                # output
+                result = 'You got the ownership of {} by paying {}HKD. Your Balance {}HKD => {}HKD.'.format(
+                    target_sqaure.get_name(),
+                    target_price,
+                    result_money_customer_before,
+                    result_money_customer_after
+                )
+                print(result)
 
     def get_token(self):
         return self.token
@@ -41,7 +91,7 @@ class PropertySquare(Square):
         self.price = price
 
     def get_rents(self):
-        return self.token
+        return self.rents
 
     def set_rents(self, rents):
         self.rents = rents

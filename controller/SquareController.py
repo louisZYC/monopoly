@@ -33,3 +33,6 @@ class SquareController:
             raise RuntimeError('please call set_target_square() first')
             
         self.view.render(self.target_square)
+
+    def render_view_you_are_here(self):
+        self.view.render_you_are_here(self.target_square)

@@ -26,3 +26,11 @@ class SquareView:
             )
         print(result)
         return
+
+    def render_you_are_here(self, square:PropertySquare):
+        result = '{}. {}) <---- You are here'.format(
+            square.get_token(),
+            square.to_string()
+        )
+        print(result)
+        return

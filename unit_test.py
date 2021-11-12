@@ -8,6 +8,7 @@ from view.SquareView import SquareView
 from model.PropertySquare import PropertySquare
 from model.Player import Player
 from model.Square import Square
+from classes.Game import Game
 
 
 class TestAll(unittest.TestCase):
@@ -190,13 +191,13 @@ class TestAll(unittest.TestCase):
                 "ov9r4d0k7e",
             ]
         }
-        path = './data/game.json'
+        path = './data/test-game.json'
 
         all_ids = games['allIds']
-        with open(path,'w') as f:
+        with open(path, 'w') as f:
             f.write(json.dumps(games))
         result_games = DbApi.READ_JSON(path)
-        result_all_ids= result_games['allIds']
+        result_all_ids = result_games['allIds']
 
         self.assertTrue(result_all_ids == all_ids)
 
@@ -242,15 +243,38 @@ class TestAll(unittest.TestCase):
                 "ov9r4d0k7e",
             ]
         }
-        path = './data/game.json'
+        path = './data/test-game.json'
 
         all_ids = games['allIds']
-        DbApi.WRITE_JSON(path,games)
-        with open(path,'r') as f:
+        DbApi.WRITE_JSON(path, games)
+        with open(path, 'r') as f:
             result_games = json.load(f)
         result_all_ids = result_games['allIds']
-        
+
         self.assertTrue(result_all_ids == all_ids)
+
+    def test_game_get_winner_list(self):
+        player_dict = {
+            'player1': Player('player1', 1500),
+            'player2': Player('player2', 1500),
+            'player3': Player('player3', 1200)
+        }
+        game = Game(player_dict)
+        result_winner_list = game.get_winner_list()
+        result_winner_names = [winner.get_name()
+                               for winner in result_winner_list]
+        self.assertTrue(result_winner_names == ['player1', 'player2'])
+
+    def test_game_get_has_winner(self):
+        player_dict = {
+            'player1': Player('player1', 1500),
+            'player2': Player('player2', -10),
+            'player3': Player('player3', -10)
+        }
+        game = Game(player_dict)
+
+        result_has_winner = game.get_has_winner()
+        self.assertTrue(result_has_winner == True)
 
 
 if __name__ == '__main__':
