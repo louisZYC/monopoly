@@ -1,3 +1,4 @@
+import copy
 import random
 from model.Player import Player
 from view.PlayerView import PlayerView
@@ -6,10 +7,12 @@ class PlayerController:
     def __init__(self, view: PlayerView = None, target_player: Player = None):
         self.view = view
         self.target_player = target_player
+        self.state = None
         return
 
     def set_target_player(self, target_player: Player):
         self.target_player = target_player
+        self.state = copy.deepcopy(target_player)
 
     def set_view(self, view: PlayerView):
         self.view = view
@@ -51,6 +54,7 @@ class PlayerController:
             money = base[0] * -10
         result_money = self.target_player.get_money() + money
         self.target_player.set_money(result_money)
+        return money
 
     def go_to_jail(self):
         if(self.target_player == None):

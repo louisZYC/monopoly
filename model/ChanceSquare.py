@@ -11,7 +11,25 @@ class ChanceSquare(Square):
         super().__init__(token)
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
-        player_controller.gain_or_lose()
+        square_controller.render_view_you_are_here()
+
+        # define variables
+        target_player = player_controller.target_player
+        result_money_before: int = None
+        result_money_after: int = None
+
+        # input
+        result_money_before = target_player.get_money()
+
+        # process
+        target_player.get_money()
+        result_money_after = target_player.get_money()
+
+        # output
+        print('You joined a lucky draw. Your Balance: {}HKD => {}HKD.'.format(
+            result_money_before,
+            result_money_after
+        ))
 
     def get_token(self):
         return self.token

@@ -39,6 +39,11 @@ class PropertySquare(Square):
             result_money_customer_before = target_player.get_money()
             result_money_owner_before = target_owner.get_money()
 
+            # checking
+            if(target_owner is target_player):
+                print('You have owned this property.')
+                return
+
             # process
             player_controller.deduct_money(target_rents)
             target_owner.set_money(target_owner.get_money()+target_rents)

@@ -54,6 +54,10 @@ class Game:
             self.player_controller.set_target_player(target_player)
 
             # middleware
+            if target_player.get_money() < 0:
+                continue
+
+            # preparing
             while True:
                 answer_action = Inquirer.promot_list(
                     '\nRound{} {}) Please select an action:'.format(
@@ -77,9 +81,7 @@ class Game:
 
             # checking
             can_go = False
-            if target_player.get_money() < 0:
-                pass
-            elif target_player.get_is_in_jail():
+            if target_player.get_is_in_jail():
                 target_fine = 150
                 result_money_before = None
                 result_money_after = None
@@ -148,21 +150,35 @@ class Game:
 
             # proccess
             if can_go:
-                target_token = (
-                    target_player.get_token()
-                    + self.dice_manager.get_result_total_number()
-                ) % self.computed_square_amount
-                target_token=16
-                target_player.set_token(target_token)
-                target_square = self.square_dict[target_token]
+                sum = target_player.get_token() + self.dice_manager.get_result_total_number()
+                result_token = sum % self.computed_square_amount
+                if(sum > 20):
+                    self.player_controller.add_money(1500)
+                    print('You pass through Go Square and receive 1500HKD. Your Balance: {}HKD => {}HKD'.format(
+                        self.player_controller.state.get_money(),
+                        target_player.get_money()
+                    ))
+                if(result_token == 0):
+                    result_token = 20
+
+                target_player.set_token(result_token)
+                target_square = self.square_dict[result_token]
                 self.sqaure_controller.set_target_square(target_square)
                 target_square.action(self.player_controller,
                                      self.sqaure_controller)
+
             # output
             self.next()
 
         # result
         winner_list = self.get_winner_list()
+        result = 'Winner:\n'
+        for winner in winner_list:
+            result += '{}) Money: {}\n'.format(
+                winner.get_name(),
+                winner.get_money()
+            )
+        print(result)
         return
 
     def list_all_players(self):

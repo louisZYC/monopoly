@@ -11,6 +11,7 @@ class InJailOrJustVisitingSquare(Square):
         super().__init__(token)
 
     def action(self, player_controller: PlayerController, square_controller: SquareController):
+        square_controller.render_view_you_are_here()
         return
 
     def get_token(self):
