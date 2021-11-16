@@ -7,12 +7,10 @@ class PlayerController:
     def __init__(self, view: PlayerView = None, target_player: Player = None):
         self.view = view
         self.target_player = target_player
-        self.state = None
         return
 
     def set_target_player(self, target_player: Player):
         self.target_player = target_player
-        self.state = copy.deepcopy(target_player)
 
     def set_view(self, view: PlayerView):
         self.view = view

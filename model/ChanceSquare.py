@@ -22,7 +22,7 @@ class ChanceSquare(Square):
         result_money_before = target_player.get_money()
 
         # process
-        target_player.get_money()
+        player_controller.gain_or_lose()
         result_money_after = target_player.get_money()
 
         # output

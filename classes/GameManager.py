@@ -1,4 +1,5 @@
 import json
+from os import name
 from classes.Util import random_id
 from classes.DbApi import DbApi
 from classes.Game import Game
@@ -26,8 +27,8 @@ class_map = {
 class GameManager:
     def __init__(self):
         self.games = dict()
-        self.game_list = dict()
-        self.game = Game()
+        self.game_dict = dict()
+        self.game: Game = Game()
         return
 
     def new_game(self):
@@ -35,7 +36,7 @@ class GameManager:
             raise RuntimeError('please call run() first')
 
         # input
-        message = 'How many players?'
+        message = 'How many players do you prefer?'
         choices = [2, 3, 4, 5, 6]
         answer_number_of_players = Inquirer.promot_list(message, choices)
 
@@ -67,6 +68,11 @@ class GameManager:
             target_name = 'player' + str(key)
             player_dict[target_name] = Player(target_name, 1500, 1, -1)
         game_name = Inquirer.prompt_text("give a name for this game")
+        uid = 'abcdefghijklmn'
+        while(uid in self.games['allIds']):
+            uid = random_id()
+
+        # output
         self.game = Game(
             player_dict,
             square_dict,
@@ -75,34 +81,116 @@ class GameManager:
             0,
             self.save
         )
-
-        # output
         self.game.play()
         return
 
     def load(self):
         if(len(self.games) == 0):
             raise RuntimeError('please call run() first')
-
-        message = 'which game you want to load?'
+        # input
+        message = 'which games you want to load?'
         choices = []
-        for key in self.game_list:
-            target = self.game_list[key]
-            choices.append((target['name'], target['id']))
+        for key in self.game_dict:
+            target = self.game_dict[key]
+            choices.append((target['name'], target['uid']))
         answer_game_id = Inquirer.promot_list(message, choices)
-        print('loaded', answer_game_id)
+
+        # process
+        uid = self.games['byId'][answer_game_id]['uid']
+        name = self.games['byId'][answer_game_id]['name']
+        turn = self.games['byId'][answer_game_id]['turn']
+        player_dict = {}
+        square_dict = {}
+        for key in self.game_dict[answer_game_id]['players']['byId']:
+            target = self.game_dict[answer_game_id]['players']['byId'][key]
+            player_dict[target['name']] = Player(
+                target['name'],
+                target['money'],
+                target['token'],
+                target['days_in_jail']
+            )
+        for key in self.game_dict[answer_game_id]['squares']['byId']:
+            target = self.game_dict[answer_game_id]['squares']['byId'][key]
+            if class_map[ target['class']] == PropertySquare:
+                owner = player_dict[target['owner']] if target['owner'] else None
+                square_dict[target['token']] = PropertySquare(
+                    target['token'],
+                    target['rents'],
+                    target['price'],
+                    target['name'],
+                    owner
+                )
+            else:
+                square_dict[target['token']] = class_map[target['class']](
+                    target['token']
+                )
+                        
+        # output
+        self.game = Game(
+            player_dict,
+            square_dict,
+            uid,
+            name,
+            turn,
+            self.save
+        )
+        self.game.play()
 
     def save(self):
-        print(self.game)
+        players = {}
+        squares = {}
+
+        for key in self.game.square_dict:
+            target: PropertySquare = self.game.square_dict[key]
+            if(isinstance(target, PropertySquare)):
+                squares[target.get_token()] = {
+                    "class": target.__class__.__name__,
+                    "token": target.get_token(),
+                    "rents": target.get_rents(),
+                    "price": target.get_price(),
+                    "owner": target.get_owner().get_name() if target.get_owner() else None,
+                    "name": target.get_name()
+                }
+            else:
+                squares[target.get_token()] = {
+                    "class": target.__class__.__name__,
+                    "token": target.get_token()
+                }
+        for key in self.game.player_dict:
+            target: Player = self.game.player_dict[key]
+            players[target.get_name()] = {
+                "name": target.get_name(),
+                "money": target.get_money(),
+                "token": target.get_token(),
+                "days_in_jail": target.get_days_in_jail()
+            }
+        game = {
+            "uid": self.game.uid,
+            "name": self.game.name,
+            "turn": self.game.turn,
+            "players": {
+                "byId": players,
+                "allIds": [x for x in self.game.player_dict]
+            },
+            "squares": {
+                "byId": squares,
+                "allIds": [x for x in self.game.square_dict]
+            }
+        }
+
+        self.games['byId'][game['uid']] = game
+        if game['uid'] not in self.games['allIds']:
+            self.games['allIds'].insert(0,game['uid'])
+        DbApi.WRITE_JSON('./data/game.json', self.games)
         return
 
     def run(self):
         # data:
         self.games = DbApi.READ_JSON('./data/game.json')
-        self.game_list = self.games['byId']
+        self.game_dict = self.games['byId']
 
         # created:
-        message = 'How you want to play?'
+        message = 'Which games do you want to play?'
         choices = ['new game', 'load game']
         answer = Inquirer.promot_list(message, choices)
         if answer == 'new game':

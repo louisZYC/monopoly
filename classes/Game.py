@@ -17,11 +17,12 @@ from controller.SquareController import SquareController
 
 
 class Game:
-    def __init__(self, player_dict: dict = {}, square_dict: dict = {}, game_id: str = "", game_name: str = "", current_turn_index: int = 0, save: Callable = None):
+    def __init__(self, player_dict: dict = {}, square_dict: dict = {}, uid: str = "", name: str = "", turn: int = 0, save: Callable = None):
         self.player_dict = player_dict
         self.square_dict = square_dict
-        self.game_id = game_id
-        self.current_turn_index = current_turn_index
+        self.uid = uid
+        self.name = name
+        self.turn = turn
         self.save = save
         self.init()
         return
@@ -45,10 +46,10 @@ class Game:
             target_player: Player = None
             target_square: PropertySquare = None
 
-            if self.current_turn_index == 0:
+            if self.turn == 0:
                 target_player_id = self.computed_player_list[0]
             else:
-                target_index = self.current_turn_index % self.computed_player_amount
+                target_index = self.turn % self.computed_player_amount
                 target_player_id = self.computed_player_list[target_index]
             target_player = self.player_dict[target_player_id]
             self.player_controller.set_target_player(target_player)
@@ -66,7 +67,8 @@ class Game:
                         ('start turn', 'start'),
                         ('check all players', 'players'),
                         ('check all squares', 'squares'),
-                        ('check board', 'board')
+                        ('check board', 'board'),
+                        ('exit','exit')
                     ]
                 )
                 if answer_action == 'players':
@@ -75,6 +77,8 @@ class Game:
                     self.list_board()
                 elif answer_action == 'squares':
                     self.list_all_squares()
+                elif answer_action == 'exit':
+                    exit()
 
                 if answer_action == 'start':
                     break
@@ -89,7 +93,7 @@ class Game:
                 result_days_after = None
 
                 answer_paid = Inquirer.promot_list(
-                    'Pay $300 to get out of jail? Your balance:' +
+                    'Pay $150 to get out of jail? Your balance:' +
                     str(target_player.get_money()),
                     ['yes', 'no']
                 )
@@ -130,7 +134,7 @@ class Game:
                         ))
                         can_go = False
 
-                if(target_player.get_days_in_jail == 3):
+                if target_player.get_days_in_jail() == 3:
                     result_money_before = target_player.get_money()
                     result_days_before = target_player.get_money()
                     self.player_controller.deduct_money(150)
@@ -153,10 +157,12 @@ class Game:
                 sum = target_player.get_token() + self.dice_manager.get_result_total_number()
                 result_token = sum % self.computed_square_amount
                 if(sum > 20):
+                    result_money_before = target_player.get_money()
                     self.player_controller.add_money(1500)
+                    result_money_after = target_player.get_money()
                     print('You pass through Go Square and receive 1500HKD. Your Balance: {}HKD => {}HKD'.format(
-                        self.player_controller.state.get_money(),
-                        target_player.get_money()
+                        result_money_before,
+                        result_money_after
                     ))
                 if(result_token == 0):
                     result_token = 20
@@ -209,14 +215,15 @@ class Game:
             print(result)
 
     def next(self):
-        self.current_turn_index += 1
+        self.turn += 1
         self.computed_round = self.get_computed_round()
+        self.save()
 
     def get_computed_round(self):
-        if self.current_turn_index == 0:
+        if self.turn == 0:
             return 0
         else:
-            return int(self.current_turn_index / self.computed_player_amount)
+            return int(self.turn / self.computed_player_amount)
 
     def get_has_winner(self):
         if len(self.player_dict) == 0:

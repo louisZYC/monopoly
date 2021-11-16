@@ -4,13 +4,13 @@ from classes.Game import Game
 from controller.PlayerController import PlayerController
 from controller.SquareController import SquareController
 from model.Player import Player
-from model.GoToJailSquare import GoToJailSquare
+from model.InJailOrJustVisitingSquare import InJailOrJustVisitingSquare
 from view.PlayerView import PlayerView
 from view.SquareView import SquareView
 
 
 ed = Player('ed', 1500, 1, -1)
-square = GoToJailSquare(16)
+square = InJailOrJustVisitingSquare(6)
 player_view = PlayerView()
 player_controller = PlayerController(player_view)
 square_view = SquareView()

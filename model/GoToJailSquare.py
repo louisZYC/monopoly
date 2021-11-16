@@ -32,7 +32,7 @@ class GoToJailSquare(Square):
         result_days_after = target_player.get_days_in_jail()
 
         # output
-        result = '6. In Jail Or Just Visiting Square) <---- You get into jail. Days: {} => {}. Token: {} => {}.'.format(
+        result = '6. In Jail Or Just Visiting Square) <---- You get into jail. Days: {} => {}. Position: {} => {}.'.format(
             result_days_before,
             result_days_after,
             result_token_before,

@@ -35,4 +35,9 @@ class SquareController:
         self.view.render(self.target_square)
 
     def render_view_you_are_here(self):
+        if(self.target_square == None):
+            raise RuntimeError('please call set_target_square() first')
+        elif(self.view == None):
+            raise RuntimeError('please call set_target_view() first')
+
         self.view.render_you_are_here(self.target_square)
