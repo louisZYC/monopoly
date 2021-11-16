@@ -46,7 +46,7 @@ class GameManager:
             2: PropertySquare(2, 90, 800, 'Central'),
             3: PropertySquare(3, 65, 700, 'Wan Chai'),
             4: TaxSquare(4),
-            5: PropertySquare(5, 60, 600),
+            5: PropertySquare(5, 60, 600, 'Stanley'),
             6: InJailOrJustVisitingSquare(6),
             7: PropertySquare(7, 10, 400, 'Shek O'),
             8: PropertySquare(8, 40, 500, 'Mong Kok'),
@@ -111,8 +111,9 @@ class GameManager:
             )
         for key in self.game_dict[answer_game_id]['squares']['byId']:
             target = self.game_dict[answer_game_id]['squares']['byId'][key]
-            if class_map[ target['class']] == PropertySquare:
-                owner = player_dict[target['owner']] if target['owner'] else None
+            if class_map[target['class']] == PropertySquare:
+                owner = player_dict[target['owner']
+                                    ] if target['owner'] else None
                 square_dict[target['token']] = PropertySquare(
                     target['token'],
                     target['rents'],
@@ -124,7 +125,7 @@ class GameManager:
                 square_dict[target['token']] = class_map[target['class']](
                     target['token']
                 )
-                        
+
         # output
         self.game = Game(
             player_dict,
@@ -180,7 +181,7 @@ class GameManager:
 
         self.games['byId'][game['uid']] = game
         if game['uid'] not in self.games['allIds']:
-            self.games['allIds'].insert(0,game['uid'])
+            self.games['allIds'].insert(0, game['uid'])
         DbApi.WRITE_JSON('./data/game.json', self.games)
         return
 
