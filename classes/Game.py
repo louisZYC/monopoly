@@ -67,7 +67,7 @@ class Game:
                         ('start turn', 'start'),
                         ('check all players', 'players'),
                         ('check all squares', 'squares'),
-                        ('check board', 'board'),
+                        ('check Monopoly board', 'board'),
                         ('exit','exit')
                     ]
                 )
